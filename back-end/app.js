@@ -1,8 +1,10 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
-// Middleware
+// Middleware - CORS first
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const errorHandler = require('./middleware/errorhandler');
@@ -36,9 +38,5 @@ app.use((req, res, next) => {
 
 // Global Error Handler
 app.use(errorHandler);
-
-const cors = require("cors");
-
-app.use(cors());
 
 module.exports = app;

@@ -13,7 +13,7 @@ import {
   Link,
 } from '@mui/material';
 import {
-  Email as EmailIcon,
+  Phone as PhoneIcon,
   Lock as LockIcon,
   Login as LoginIcon,
 } from '@mui/icons-material';
@@ -21,10 +21,10 @@ import { useLoginMutation } from '../services/authApi';
 import { useAuth } from '../context/AuthContext';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-  
+
   const [login, { isLoading }] = useLoginMutation();
   const { login: setAuth } = useAuth();
   const navigate = useNavigate();
@@ -32,13 +32,13 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
-    
+
     try {
-      const result = await login({ email, password }).unwrap();
-      setAuth(result.token);
+      const result = await login({ phone, password }).unwrap();
+      setAuth(result.data?.token);
       navigate('/');
     } catch (err) {
-      setErrorMsg(err.data?.message || 'Login failed. Please check your credentials.');
+      setErrorMsg(err?.data?.message || 'Login failed. Please check your credentials.');
     }
   };
 
@@ -60,16 +60,17 @@ const LoginPage = () => {
           <form onSubmit={handleSubmit}>
             <Stack spacing={3}>
               <TextField
-                label="Email Address"
-                type="email"
+                label="Phone Number"
+                type="tel"
                 fullWidth
                 required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="e.g. 9876543210"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <EmailIcon color="action" fontSize="small" />
+                      <PhoneIcon color="action" fontSize="small" />
                     </InputAdornment>
                   ),
                 }}

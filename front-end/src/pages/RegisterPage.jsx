@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import {
   Person as PersonIcon,
-  Email as EmailIcon,
+  Phone as PhoneIcon,
   Lock as LockIcon,
   PersonAdd as RegisterIcon,
 } from '@mui/icons-material';
@@ -24,7 +24,7 @@ import { useAuth } from '../context/AuthContext';
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
+    phone: '',
     password: '',
   });
   const [errorMsg, setErrorMsg] = useState('');
@@ -39,10 +39,10 @@ const RegisterPage = () => {
     
     try {
       const result = await register(formData).unwrap();
-      setAuth(result.token);
+      setAuth(result.data?.token);
       navigate('/');
     } catch (err) {
-      setErrorMsg(err.data?.message || 'Registration failed. Please try again.');
+      setErrorMsg(err?.data?.message || 'Registration failed. Please try again.');
     }
   };
 
@@ -83,17 +83,18 @@ const RegisterPage = () => {
                 }}
               />
               <TextField
-                label="Email Address"
-                name="email"
-                type="email"
+                label="Phone Number"
+                name="phone"
+                type="tel"
                 fullWidth
                 required
-                value={formData.email}
+                placeholder="e.g. 9876543210"
+                value={formData.phone}
                 onChange={handleChange}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <EmailIcon color="action" fontSize="small" />
+                      <PhoneIcon color="action" fontSize="small" />
                     </InputAdornment>
                   ),
                 }}

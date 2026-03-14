@@ -119,8 +119,14 @@ const MapExplorerPage = () => {
         
         {!import.meta.env.VITE_GOOGLE_MAPS_API_KEY && (
           <Box sx={{ position: 'absolute', top: 16, left: 16, right: 16, zIndex: 10 }}>
-             <Alert severity="warning" icon={<InfoIcon />} sx={{ borderRadius: 3, boxShadow: 3 }}>
-              Google Maps API key is not configured.
+            <Alert severity="warning" icon={<InfoIcon />} sx={{ borderRadius: 3, boxShadow: 3 }}>
+              Google Maps API key is not configured. Add{' '}
+              <strong>VITE_GOOGLE_MAPS_API_KEY</strong> to your <code>.env</code> file in the
+              front-end folder, then restart the dev server. Get a key at{' '}
+              <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer">
+                Google Cloud Console
+              </a>
+              .
             </Alert>
           </Box>
         )}

@@ -37,4 +37,8 @@ app.use((req, res, next) => {
 // Global Error Handler
 app.use(errorHandler);
 
+const cors = require("cors");
+
+app.use(cors());
+
 module.exports = app;

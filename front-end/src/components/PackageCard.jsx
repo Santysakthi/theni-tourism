@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Card,
   CardContent,
@@ -15,19 +14,19 @@ import {
   CurrencyRupee as RupeeIcon,
   VerifiedUser as UserCheckIcon,
 } from '@mui/icons-material';
-import { useAuth } from '../context/AuthContext';
+import ContactProviderButton from './ContactProviderButton';
 
-const PackageCard = ({ service }) => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
+const PackageCard = ({ service, placeName }) => {
+  const packageTitle =
+    service.title || service.name || service.vehicle_type || 'Transport Package';
 
-  const handleBookNow = () => {
-    if (!user) {
-      navigate('/login');
-    } else {
-      alert(`Booking initiated for ${service.vehicle_type || 'Private Transport'}!`);
-    }
-  };
+  const resolvedPlaceName =
+    placeName || service.places?.[0]?.name || 'Theni';
+
+  const providerName =
+    service.provider?.company_name || 'Theni Travels';
+
+  const providerPhone = service.provider?.phone;
 
   return (
     <Card variant="outlined" sx={{ borderRadius: 4, '&:hover': { boxShadow: '0 8px 24px rgba(0,0,0,0.06)' } }}>
@@ -56,7 +55,7 @@ const PackageCard = ({ service }) => {
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 3 }}>
           <UserCheckIcon sx={{ fontSize: '0.9rem' }} />
-          Provided by {service.provider || 'Theni Travels'}
+        Provided by {providerName}
         </Typography>
 
         <Divider sx={{ mb: 2 }} />
@@ -68,10 +67,14 @@ const PackageCard = ({ service }) => {
               {service.duration || 'Full Day'}
             </Typography>
           </Box>
-          <Button size="small" sx={{ fontWeight: 700 }} onClick={handleBookNow}>
-            Book Now
-          </Button>
         </Stack>
+
+        <ContactProviderButton
+          providerPhone={providerPhone}
+          placeName={resolvedPlaceName}
+          packageTitle={packageTitle}
+          vehicleType={service.vehicle_type}
+        />
       </CardContent>
     </Card>
   );

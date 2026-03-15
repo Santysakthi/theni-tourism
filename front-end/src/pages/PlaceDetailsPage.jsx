@@ -146,7 +146,13 @@ const PlaceDetailsPage = () => {
                 </Stack>
               ) : services?.length > 0 ? (
                 <Stack spacing={3}>
-                  {services.map(service => <PackageCard key={service.id} service={service} />)}
+                  {services.map(service => (
+                    <PackageCard
+                      key={service.id}
+                      service={service}
+                      placeName={place.name}
+                    />
+                  ))}
                 </Stack>
               ) : (
                 <Box sx={{ p: 4, textAlign: 'center', bgcolor: 'background.default', borderRadius: 4, border: '1px dashed', borderColor: 'divider' }}>
@@ -156,21 +162,7 @@ const PlaceDetailsPage = () => {
                 </Box>
               )}
 
-              <Button 
-                variant="contained" 
-                fullWidth 
-                size="large" 
-                sx={{ mt: 4, py: 2 }}
-                onClick={() => {
-                  if (!user) {
-                    navigate('/login');
-                  } else {
-                    alert(`Global booking initiated for ${place.name}! Related transport: ${services?.length > 0 ? services[0].vehicle_type : 'None'}`);
-                  }
-                }}
-              >
-                Book Your Trip Now
-              </Button>
+              {/* Global booking button kept simple for now; per-package WhatsApp contact is handled in each card */}
             </Paper>
           </Grid>
         </Grid>

@@ -47,6 +47,18 @@ const serviceController = {
     } catch (error) {
       next(error);
     }
+  },
+
+  getServicesByPlaceSlug: async (req, res, next) => {
+    try {
+      const services = await ServiceService.getServicesByPlaceSlug(req.params.slug);
+      res.status(200).json({
+        success: true,
+        data: services
+      });
+    } catch (error) {
+      next(error);
+    }
   }
 };
 

@@ -1,93 +1,90 @@
 import React from 'react';
-import {
-  Box,
-  Container,
-  Typography,
-  Grid,
-  TextField,
-  MenuItem,
+import { useParams, useNavigate } from 'react-router-dom';
+import { 
+  Box, 
+  Container, 
+  Typography, 
+  Grid, 
+  Paper, 
+  Breadcrumbs, 
+  Link,
   Stack,
-  InputAdornment,
-  Paper,
+  Alert
 } from '@mui/material';
-import {
-  Search as SearchIcon,
-  CardTravel as PackageIcon,
+import { 
+  NavigateNext as NavigateNextIcon,
+  Home as HomeIcon,
+  Map as MapIcon 
 } from '@mui/icons-material';
-import { useGetServicesQuery } from '../services/servicesApi';
-import Loader from '../components/Loader';
+import { useGetServicesByPlaceSlugQuery } from '../services/servicesApi';
 import PackageCard from '../components/PackageCard';
+import Loader from '../components/Loader';
 
 const PackagesPage = () => {
-  const { data: services, isLoading, error } = useGetServicesQuery();
+  const { slug } = useParams();
+  const navigate = useNavigate();
+  const { data: packages, isLoading, error } = useGetServicesByPlaceSlugQuery(slug);
+
+  // Capitalize slug for display if needed, or use a better way to get place name
+  const displayPlaceName = slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
+  if (isLoading) return <Loader fullScreen />;
 
   return (
-    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', pb: 12 }}>
-      {/* Header */}
-      <Box sx={{ bgcolor: 'grey.900', color: 'white', py: { xs: 8, md: 12 } }}>
-        <Container maxWidth="md" sx={{ textAlign: 'center' }}>
-          <Typography variant="h2" gutterBottom>Tour Packages & Services</Typography>
-          <Typography variant="body1" sx={{ color: 'grey.400', maxWidth: 600, mx: 'auto' }}>
-            Browse through our curated transport and tour packages to make your Theni trip comfortable and memorable.
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', py: 4 }}>
+      <Container maxWidth="lg">
+        {/* Breadcrumbs */}
+        <Breadcrumbs 
+          separator={<NavigateNextIcon fontSize="small" />} 
+          sx={{ mb: 4 }}
+        >
+          <Link
+            underline="hover"
+            color="inherit"
+            href="/"
+            onClick={(e) => { e.preventDefault(); navigate('/'); }}
+            sx={{ display: 'flex', alignItems: 'center' }}
+          >
+            <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+            Home
+          </Link>
+          <Typography color="text.primary" sx={{ display: 'flex', alignItems: 'center' }}>
+            <MapIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+            {displayPlaceName}
           </Typography>
-        </Container>
-      </Box>
+          <Typography color="text.secondary">Transport Packages</Typography>
+        </Breadcrumbs>
 
-      <Container maxWidth="lg" sx={{ mt: -5 }}>
-        <Paper elevation={4} sx={{ p: 2, borderRadius: 5 }}>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item xs={12} md={9}>
-              <TextField
-                fullWidth
-                placeholder="Search for vehicles or providers..."
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon color="action" />
-                    </InputAdornment>
-                  ),
-                  sx: { borderRadius: 4, bgcolor: 'grey.50' }
-                }}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <TextField
-                select
-                fullWidth
-                defaultValue="All Types"
-                InputProps={{ sx: { borderRadius: 4, bgcolor: 'grey.50' } }}
-              >
-                {['All Types', 'Sedan', 'SUV', 'Van'].map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-          </Grid>
-        </Paper>
+        <Box sx={{ mb: 6 }}>
+          <Typography variant="h2" gutterBottom sx={{ fontWeight: 900 }}>
+            Choose Your <Box component="span" sx={{ color: 'secondary.main' }}>Safari</Box> Experience
+          </Typography>
+          <Typography variant="h5" color="text.secondary" sx={{ maxWidth: 800 }}>
+            Available transport and tour packages for {displayPlaceName}. Book directly via WhatsApp with our trusted local providers.
+          </Typography>
+        </Box>
 
-        {isLoading ? (
-          <Loader />
-        ) : error ? (
-          <Box sx={{ mt: 8, textAlign: 'center', py: 8, bgcolor: 'error.light', borderRadius: 4, color: 'error.dark' }}>
-            <Typography variant="h6">Failed to load packages. Please try again later.</Typography>
-          </Box>
-        ) : services?.length > 0 ? (
-          <Grid container spacing={4} sx={{ mt: 6 }}>
-            {services.map((service) => (
-              <Grid item xs={12} sm={6} md={4} key={service.id}>
-                <PackageCard service={service} />
+        {error ? (
+          <Alert severity="error" sx={{ borderRadius: 4 }}>
+            Error loading packages. Please try again later.
+          </Alert>
+        ) : !packages || packages.length === 0 ? (
+          <Paper sx={{ p: 8, textAlign: 'center', borderRadius: 6, bgcolor: 'background.paper', border: '1px dashed', borderColor: 'divider' }}>
+            <Typography variant="h5" color="text.secondary" gutterBottom>
+              No packages found for {displayPlaceName}
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              We are currently working with local providers to bring you the best safari experiences in this area. Check back soon!
+            </Typography>
+          </Paper>
+        ) : (
+          <Grid container spacing={4}>
+            {packages.map((pkg) => (
+              <Grid item xs={12} md={6} key={pkg.id}>
+                <PackageCard service={pkg} placeName={displayPlaceName} />
               </Grid>
             ))}
           </Grid>
-        ) : (
-          <Box sx={{ mt: 10, textAlign: 'center', py: 12, border: '2px dashed', borderColor: 'divider', borderRadius: 8 }}>
-            <PackageIcon sx={{ fontSize: 60, color: 'grey.300', mb: 2 }} />
-            <Typography variant="h6" color="text.secondary">No packages found</Typography>
-            <Typography variant="body2" color="text.secondary">Try adjusting your search filters or check back later.</Typography>
-          </Box>
         )}
       </Container>
     </Box>

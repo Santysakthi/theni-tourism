@@ -20,11 +20,7 @@ const PlaceCard = ({ place }) => {
 
   const handleBookNow = (e) => {
     e.preventDefault();
-    if (!user) {
-      navigate('/login', { state: { from: `/places/${place.slug}` } });
-    } else {
-      alert(`Booking initiated for ${place.name}!`);
-    }
+    navigate(`/packages/${place.slug}`);
   };
 
   return (

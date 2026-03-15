@@ -25,6 +25,22 @@ const ServiceService = {
 
   getServicesByPlace: async (placeId) => {
     return await ServiceModel.getByPlaceId(placeId);
+  },
+
+  getServicesByPlaceSlug: async (slug) => {
+    const services = await ServiceModel.getByPlaceSlug(slug);
+    return services.map(s => ({
+      id: s.id,
+      title: s.title,
+      description: s.description,
+      vehicle_type: s.vehicle_type,
+      price: s.price,
+      duration_days: s.duration_days,
+      provider: {
+        company_name: s.company_name,
+        phone: s.phone
+      }
+    }));
   }
 };
 

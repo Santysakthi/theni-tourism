@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Card,
   CardContent,
@@ -14,8 +15,20 @@ import {
   CurrencyRupee as RupeeIcon,
   VerifiedUser as UserCheckIcon,
 } from '@mui/icons-material';
+import { useAuth } from '../context/AuthContext';
 
 const PackageCard = ({ service }) => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleBookNow = () => {
+    if (!user) {
+      navigate('/login');
+    } else {
+      alert(`Booking initiated for ${service.vehicle_type || 'Private Transport'}!`);
+    }
+  };
+
   return (
     <Card variant="outlined" sx={{ borderRadius: 4, '&:hover': { boxShadow: '0 8px 24px rgba(0,0,0,0.06)' } }}>
       <CardContent sx={{ p: 3 }}>
@@ -55,7 +68,7 @@ const PackageCard = ({ service }) => {
               {service.duration || 'Full Day'}
             </Typography>
           </Box>
-          <Button size="small" sx={{ fontWeight: 700 }}>
+          <Button size="small" sx={{ fontWeight: 700 }} onClick={handleBookNow}>
             Book Now
           </Button>
         </Stack>

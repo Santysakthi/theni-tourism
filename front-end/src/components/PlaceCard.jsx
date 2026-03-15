@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {
   Card,
   CardMedia,
@@ -11,9 +11,22 @@ import {
   Chip,
   IconButton,
 } from '@mui/material';
-import { LocationOn as MapPinIcon, ArrowForward as ArrowForwardIcon } from '@mui/icons-material';
+import { LocationOn as MapPinIcon, ArrowForward as ArrowForwardIcon, BookmarkAdd as BookIcon } from '@mui/icons-material';
+import { useAuth } from '../context/AuthContext';
 
 const PlaceCard = ({ place }) => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleBookNow = (e) => {
+    e.preventDefault();
+    if (!user) {
+      navigate('/login', { state: { from: `/places/${place.slug}` } });
+    } else {
+      alert(`Booking initiated for ${place.name}!`);
+    }
+  };
+
   return (
     <Card 
       sx={{ 
@@ -68,29 +81,31 @@ const PlaceCard = ({ place }) => {
           {place.description || 'Explore the majestic beauty and scenic landscapes of this amazing destination in Theni.'}
         </Typography>
       </CardContent>
-      <CardActions sx={{ px: 3, pb: 3, pt: 0, justifyContent: 'space-between' }}>
-        <Typography 
-          variant="button" 
-          component={RouterLink} 
-          to={`/places/${place.slug}`}
+      <CardActions sx={{ px: 3, pb: 3, pt: 0, gap: 1 }}>
+        <Button 
+          variant="contained" 
+          size="small" 
+          startIcon={<BookIcon />}
+          onClick={handleBookNow}
+          fullWidth
           sx={{ 
-            color: 'primary.main', 
-            textDecoration: 'none', 
             fontWeight: 700,
-            '&:hover': { textDecoration: 'underline' }
+            borderRadius: 2,
+            textTransform: 'none'
           }}
         >
-          Explore Details
-        </Typography>
+          Book Now
+        </Button>
         <IconButton 
           component={RouterLink} 
           to={`/places/${place.slug}`}
           sx={{ 
-            bgcolor: 'primary.main', 
-            color: 'white',
-            '&:hover': { bgcolor: 'primary.dark' },
-            width: 32,
-            height: 32
+            bgcolor: 'primary.light', 
+            color: 'primary.main',
+            '&:hover': { bgcolor: 'primary.main', color: 'white' },
+            width: 36,
+            height: 36,
+            borderRadius: 2
           }}
         >
           <ArrowForwardIcon sx={{ fontSize: 18 }} />

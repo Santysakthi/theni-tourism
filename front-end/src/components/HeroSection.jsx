@@ -33,7 +33,7 @@ const HeroSection = () => {
           sx={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.8))',
+            background: 'linear-gradient(to bottom, rgba(27, 48, 34, 0.7), rgba(27, 48, 34, 0.5), rgba(27, 48, 34, 0.9))',
           }}
         />
       </Box>
@@ -46,9 +46,11 @@ const HeroSection = () => {
               fontSize: { xs: '3rem', md: '5rem' },
               lineHeight: 1.1,
               letterSpacing: '-0.02em',
+              fontWeight: 900,
+              textShadow: '0 4px 20px rgba(0,0,0,0.3)',
             }}
           >
-            Discover <Box component="span" sx={{ color: 'primary.light', fontStyle: 'italic' }}>Theni</Box> Tourism
+            Discover <Box component="span" sx={{ color: 'secondary.main', fontStyle: 'italic', position: 'relative', '&::after': { content: '""', position: 'absolute', bottom: -5, left: 0, width: '100%', height: 4, bgcolor: 'secondary.main', opacity: 0.3, borderRadius: 2 } }}>Theni</Box> Tourism
           </Typography>
           
           <Typography
@@ -56,7 +58,7 @@ const HeroSection = () => {
             sx={{
               maxWidth: 700,
               fontWeight: 500,
-              color: 'grey.300',
+              color: 'rgba(255,255,255,0.8)',
               lineHeight: 1.6,
             }}
           >
@@ -84,12 +86,12 @@ const HeroSection = () => {
                 px: 4,
                 fontSize: '1.1rem',
                 color: 'white',
-                borderColor: 'rgba(255,255,255,0.3)',
+                borderColor: 'rgba(255,255,255,0.4)',
                 bgcolor: 'rgba(255,255,255,0.1)',
                 backdropFilter: 'blur(10px)',
                 '&:hover': {
-                  borderColor: 'white',
-                  bgcolor: 'rgba(255,255,255,0.2)',
+                  borderColor: 'secondary.main',
+                  bgcolor: 'rgba(251, 192, 45, 0.1)',
                 },
               }}
             >
@@ -106,8 +108,8 @@ const HeroSection = () => {
               { label: 'Rating', value: '4.8/5' }
             ].map((stat) => (
               <Grid item xs={6} md={3} key={stat.label}>
-                <Typography variant="h4" color="primary.light">{stat.value}</Typography>
-                <Typography variant="caption" sx={{ textTransform: 'uppercase', letterSpacing: 2, color: 'grey.400' }}>
+                <Typography variant="h4" sx={{ color: 'secondary.main', fontWeight: 800 }}>{stat.value}</Typography>
+                <Typography variant="caption" sx={{ textTransform: 'uppercase', letterSpacing: 2, color: 'rgba(255,255,255,0.6)', fontWeight: 600 }}>
                   {stat.label}
                 </Typography>
               </Grid>

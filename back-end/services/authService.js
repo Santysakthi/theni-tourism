@@ -44,14 +44,16 @@ const AuthService = {
 
     const user = await AuthModel.findByPhone(phone);
     if (!user) {
-      const error = new Error('Invalid phone or password');
+      const error = new Error('Invalid user');
       error.statusCode = 401;
       throw error;
     }
 
+    console.log("passwordpassword : ",password,user.password);
+    
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      const error = new Error('Invalid phone or password');
+      const error = new Error('Invalid phone or password , please type correctgly');
       error.statusCode = 401;
       throw error;
     }

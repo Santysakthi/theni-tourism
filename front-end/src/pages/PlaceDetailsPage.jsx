@@ -1,5 +1,4 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -19,11 +18,14 @@ import {
 } from '@mui/icons-material';
 import { useGetPlaceBySlugQuery } from '../services/placesApi';
 import { useGetServicesByPlaceQuery } from '../services/servicesApi';
+import { useAuth } from '../context/AuthContext';
 import Loader from '../components/Loader';
 import PackageCard from '../components/PackageCard';
 
 const PlaceDetailsPage = () => {
   const { slug } = useParams();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const { data: place, isLoading: isPlaceLoading, error: placeError } = useGetPlaceBySlugQuery(slug);
   
   const { data: services, isLoading: isServicesLoading } = useGetServicesByPlaceQuery(place?.id, {
@@ -154,8 +156,20 @@ const PlaceDetailsPage = () => {
                 </Box>
               )}
 
-              <Button variant="contained" fullWidth size="large" sx={{ mt: 4, py: 2 }}>
-                Enquire Now
+              <Button 
+                variant="contained" 
+                fullWidth 
+                size="large" 
+                sx={{ mt: 4, py: 2 }}
+                onClick={() => {
+                  if (!user) {
+                    navigate('/login');
+                  } else {
+                    alert(`Global booking initiated for ${place.name}! Related transport: ${services?.length > 0 ? services[0].vehicle_type : 'None'}`);
+                  }
+                }}
+              >
+                Book Your Trip Now
               </Button>
             </Paper>
           </Grid>

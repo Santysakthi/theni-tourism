@@ -42,12 +42,13 @@ const HomePage = () => {
       </Container>
 
       {/* Why Visit Section */}
-      <Box sx={{ bgcolor: 'grey.900', color: 'white', py: { xs: 10, md: 15 }, overflow: 'hidden' }}>
+      <Box sx={{ bgcolor: '#333446ff', color: 'white', py: { xs: 10, md: 15 }, overflow: 'hidden', position: 'relative' }}>
+        {/* Subtle decorative leaf pattern overlay could go here */}
         <Container maxWidth="lg">
           <Grid container spacing={8} alignItems="center">
             <Grid item xs={12} lg={6}>
               <Stack spacing={4}>
-                <Typography variant="h2">Why Visit Theni?</Typography>
+                <Typography variant="h2" sx={{ color: 'secondary.main' }}>Why Visit Theni?</Typography>
                 <Stack spacing={4}>
                   {[
                     { title: 'Natural Beauty', desc: 'Lush green tea estates, cardamom plantations, and misty mountains.' },
@@ -60,21 +61,22 @@ const HomePage = () => {
                         sx={{
                           width: 48,
                           height: 48,
-                          borderRadius: '50%',
-                          bgcolor: 'primary.main',
+                          borderRadius: '12px',
+                          bgcolor: 'secondary.main',
+                          color: 'primary.dark',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           fontWeight: 800,
                           flexShrink: 0,
-                          boxShadow: '0 0 20px rgba(59, 130, 246, 0.4)',
+                          boxShadow: '0 4px 15px rgba(251, 192, 45, 0.4)',
                         }}
                       >
                         {idx + 1}
                       </Box>
                       <Box>
                         <Typography variant="h6" gutterBottom>{item.title}</Typography>
-                        <Typography variant="body2" sx={{ color: 'grey.400', lineHeight: 1.6 }}>{item.desc}</Typography>
+                        <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.7)', lineHeight: 1.6 }}>{item.desc}</Typography>
                       </Box>
                     </Box>
                   ))}
@@ -92,7 +94,7 @@ const HomePage = () => {
                     right: -20,
                     width: '100%',
                     height: '100%',
-                    border: '8px solid rgba(255,255,255,0.05)',
+                    border: '8px solid rgba(251,192,45,0.2)',
                     borderRadius: 4,
                     zIndex: 0,
                   }
@@ -105,7 +107,7 @@ const HomePage = () => {
                   sx={{
                     width: '100%',
                     borderRadius: 4,
-                    boxShadow: 10,
+                    boxShadow: '0 30px 60px -12px rgba(0,0,0,0.5)',
                     position: 'relative',
                     zIndex: 1,
                     transform: 'rotate(2deg)',

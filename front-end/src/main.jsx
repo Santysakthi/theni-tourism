@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import theme from './theme'
 import { store } from './app/store'
 import { AuthProvider } from './context/AuthContext'
@@ -25,6 +27,15 @@ createRoot(document.getElementById('root')).render(
       <Provider store={store}>
         <AuthProvider>
           <App />
+          <ToastContainer
+            position="top-right"
+            autoClose={4000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            pauseOnHover
+            theme="colored"
+          />
         </AuthProvider>
       </Provider>
     </ThemeProvider>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Stack, Typography } from '@mui/material';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import { toast } from 'react-toastify';
 
 const sanitizePhone = (phone) => {
   if (!phone) return '';
@@ -20,12 +21,12 @@ const ContactProviderButton = ({
     const phone = sanitizePhone(providerPhone);
 
     if (!phone) {
-      alert('Provider phone number is not available for this package.');
+      toast.error('Provider phone number is not available for this package.');
       return;
     }
 
     if (!travelDate || !people) {
-      alert('Please select a travel date and number of people.');
+      toast.warning('Please select a travel date and number of people.');
       return;
     }
 
